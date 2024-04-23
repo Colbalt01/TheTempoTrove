@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>The Tempo Trove-Logged Out</title>
+    </head>
+    <body>
+        <div class="header">
+            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>            
+            <a class='button' href="{{ url_for('index') }}">Home</a>
+            <a class='button' href="{{ url_for('insertItem') }}">Insert</a>
+            <a class='button' href="{{ url_for('register') }}">Register</a>
+            <a class='button' href="{{ url_for('login') }}">Login</a>
+        </div>
+        <div class="main">
+            <h1>You Are Logged Out</h1>
+            <p>This page needs you to be logged in</p>
+            <a class='button' href="{{ url_for('register') }}">Register</a>
+            <a class='button' href="{{ url_for('login') }}">Login</a>
+        </div>
+    </body>
+</html>

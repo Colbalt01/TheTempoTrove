@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>The Tempo Trove-Login</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    </head>
+    <body>
+        <div class="header">
+            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>            
+            <a class='button' href="{{ url_for('index') }}">Home</a>
+            <a class='button' href="{{ url_for('insertItem') }}">Insert</a>
+            <a class='button' href="{{ url_for('register') }}">Register</a>
+            <a class='button' href="{{ url_for('login') }}">Login</a>
+        </div>
+        {% from "_formhelpers.html" import render_field %}
+        <form method=post>
+            <dl>
+                {{ render_field(form.username) }}
+                {{ render_field(form.email) }}
+                {{ render_field(form.password) }}
+                {{ render_field(form.confirm) }}
+                {{ render_field(form.accept_tos) }}
+            </dl>
+            <input type=submit value=Submit>
+        </form>
+    </body>
+</html>

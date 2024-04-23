@@ -23,45 +23,89 @@ mycolConcert = mydb["Concerts"]
 
 class DAL:
     def getData(url, querystring):
-        response = requests.get(bandSearchUrl, headers=headers, params=querystring)
+        response = requests.get(url, headers=headers, params=querystring)
         resjson = response.json()
         return resjson
 
-    def insertBand(name):
+    def insertBand(name, user):
         if(name != ""):
+            bands = DAL.getAllBands()
+            for band in bands:
+                if band.get('name') == name:
+                    return {}
             querystring = {"name":name}
             data = DAL.getData(bandSearchUrl, querystring)
+            DAL.insertFavorite(user, name, "artist")
             inserted = mycolB.insert_one(data)
             print(inserted)
             return data
     
-    def insertAlbum(name, artistName):
+    def insertAlbum(name, albumName, user):
         if(name != ""):
             querystring = {"term":name,"type":"album"}
-            data = DAL.getData(searchUrl, querystring)
             album = {}
+            albums = DAL.getAllAlbums()
+            for a in albums:
+                if a.get('name') == name:
+                    return{}            
+            data = DAL.getData(searchUrl, querystring)
             for a in data.get('albums').get('items'):
-                if(a.get("artists")[0].get("name") == artistName and a.get("name") == name):
+                if(a.get("artists")[0].get("name") == albumName and a.get("name") == name):
                     album = a
             if(album != {}):
+                DAL.insertBand(albumName)
+                DAL.insertFavorite(user, name, "album")
                 inserted = mycolA.insert_one(album)
                 print(inserted)
             return album
     
-    def insertSong(name, artistName):
-        if(name != "" and artistName != ""):
-            querystring = {"name":name + " " + artistName}
+    def insertSong(name, songName, user):
+        songs = DAL.getAllSongs()
+        for song in songs:
+            if song.get('name') == name:
+                return {}
+        if(name != "" and songName != ""):            
+            DAL.insertBand(songName)
+            querystring = {"name":name + " " + songName}
             data = DAL.getData(songSearchUrl, querystring)
+            DAL.insertFavorite(user, name, "track")
             inserted = mycolS.insert_one(data)
             print(inserted)
             return data
     
-    def insertUser(username, password, email):
+    def insertUser(username, email, password):
         if(username != "" and password != "" and email !=""):
             user = {"username": username, "password":password, "email":email}
             inserted = mycolUser.insert_one(user)
             print(inserted)
             return user
+
+    def insertFavorite(username, name, type):
+        users = DAL.getUsers()
+        item = {}
+        for user in users:
+            if (user.get('username') == username):
+                if(type == "artist"):
+                    item = DAL.getAllBands()
+                elif(type == "album"):
+                    item = DAL.getAllAlbums()
+                elif(type == "track"):
+                    item = DAL.getAllSongs()
+                for i in item:
+                    if(i.get("name") == name):
+                        return False
+                    itemFav = {"user":username, "name":name, "type":type}
+                    inserted = mycolFav.insert_one(itemFav)
+                    print(inserted)
+                    return True
+        return False
+
+    def getAllBands():
+        bands = []
+        for x in mycolB.find():
+            bands.append(x)
+        # print(bands)
+        return bands
 
     def getBands(i):
         bands = []
@@ -73,6 +117,13 @@ class DAL:
         # print(bands)
         return bands
 
+    def getAllAlbums():
+        albums = []
+        for x in mycolA.find():
+            albums.append(x)
+        # print(albums)
+        return albums
+
     def getAlbums(i):
         albums = []
         e = 0
@@ -83,6 +134,13 @@ class DAL:
         # print(albums)
         return albums
 
+    def getAllSongs():
+        songs = []
+        for x in mycolS.find():
+            songs.append(x)
+        # print(songs)
+        return songs
+
     def getSongs(i):
         songs = []
         e = 0
@@ -92,6 +150,12 @@ class DAL:
                 e = e + 1
         # print(songs)
         return songs
+    
+    def getUsers():
+        users = []
+        for u in mycolUser.find():
+            users.append(u)
+        return users
 
     def getBand(b):
         band = {}
@@ -100,8 +164,8 @@ class DAL:
                 band = x
             else:
                 band = [False]
-        return band
-    
+        return band 
+
     def getAlbum(a):
         album = {}
         for x in mycolA.find({},{"_id": 0}):
@@ -166,10 +230,19 @@ class DAL:
             print("user not found")
         return fav
 
+    def getConcerts():
+        concerts = []
+        for c in mycolConcert.find():
+            concerts.append(c)
+        return concerts
+
     def insertConcerts(user, location):
         # print(fUser)
-        if(user != "" and user == DAL.getUser(user).get("username")):
+        if(user == DAL.getUser(user).get("username")):
             for fav in DAL.getFavorites(user):
+                for c in DAL.getConcerts():
+                    cName = c.get('title').str.lower()
+                    # if (cName != )
                 b = DAL.getBand(fav.get("name"))
                 querystring = {"artistId":b.get("id")}
                 data = DAL.getData(concertUrl, querystring)
@@ -177,9 +250,4 @@ class DAL:
                     if (c.get("location") == location):
                         mycolConcert.insert_one(c)
 
-# print(DAL.getSong("Funeral Derangements"))
-# DAL.insertUser("impala67", "DeanSam", "impala67@hotmail.com")
-# DAL.favItem("impala67","Twenty One Pilots", "artist")
-# DAL.insertConcerts("Colbalt01", "Salt Lake City")
-# print(DAL.insertSong("Funeral Derangements", "Ice Nine Kills"))
-DAL.getBands(5)
+# DAL.insertFavorite("Colbalt01", "In This Moment", "artist")

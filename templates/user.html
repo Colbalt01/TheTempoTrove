@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>The Tempo Trove</title>
+    </head>
+    <body>
+        <div class="header">
+            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>            
+            <a class='button' href="{{ url_for('index') }}">Home</a>
+            <a class='button' href="{{ url_for('insertItem') }}">Insert</a>
+            <a class='button' href="{{ url_for('userPage') }}">Profile</a>
+            <a class='button' href="{{ url_for('logout') }}">Logout</a>
+        </div>
+        <div class="main">
+            <h1>Welcome to The Tempo Trove!</h1>
+            <p class='username'>{{user}}</p>
+            <div class="items">
+                <h2>Bands</h2>
+                {% for band in items %}
+                {% set typeF = band.get('type') %}
+                    {% for key, value in band.items() %}
+                        {% if key == "name" and typeF == "artist" %}
+                            <span>{{value}}</span>
+                            <br/>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <h2>Albums</h2>
+                {% for album in items %}
+                {% set typeF = album.get('type') %}
+                    {% for key, value in album.items() %}
+                        {% if key == "name" and typeF == "album" %}
+                            <span>{{value}}</span>
+                            <br/>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <h2>Songs</h2>
+                {% for song in items %}
+                {% set typeF = song.get('type') %}
+                    {% for key, value in song.items() %}
+                        {% if key == "name" and typeF == "track" %}
+                            <span>{{value}}</span>
+                            <br/>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>            
+            <a class='button' href="{{ url_for('concerts') }}">Concerts</a>
+            <a class='button' href="{{ url_for('logout') }}">Related</a>
+            <a class='button' href="{{ url_for('logout') }}">Visual</a>
+        </div>
+    </body>
+</html>

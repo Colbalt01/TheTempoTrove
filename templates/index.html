@@ -10,6 +10,13 @@
             <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>            
             <a class='button' href="{{ url_for('index') }}">Home</a>
             <a class='button' href="{{ url_for('insertItem') }}">Insert</a>
+            {% if not value4 %}
+                <a class='button' href="{{ url_for('register') }}">Register</a>
+                <a class='button' href="{{ url_for('login') }}">Login</a>            
+            {% else %}
+            <a class='button' href="{{ url_for('userPage') }}">Profile</a>
+            <a class='button' href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
         </div>
         <div class="main">
             <h1>Welcome to The Tempo Trove!</h1>
