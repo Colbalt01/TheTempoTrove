@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>The Tempo Trove</title>
+        <link rel="icon" href="/static/TheTempoTrove.png">
+        <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     </head>
     <body>
         <div class="header">
-            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>            
+            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>
             <a class='button' href="{{ url_for('index') }}">Home</a>
             <a class='button' href="{{ url_for('insertItem') }}">Insert</a>
             {% if not value4 %}
@@ -20,36 +21,53 @@
         </div>
         <div class="main">
             <h1>Welcome to The Tempo Trove!</h1>
-            <p>This is my website</p>
+            <p>This is my website where for music lovers to favorite!</p>
             <div class="items">
                 <h2>Bands</h2>
+                <div class="iDiv">
                 {% for band in value1 %}
                     {% for key, value in band.items() %}
                         {% if key == "name" %}
-                            <span>{{value}}</span>
+                            <span class="mSpan">{{value}}</span>
+                        {% endif %}
+                        {% if key == "shareUrl" %}
+                            <a class='sml-button' href="{{ value }}">Spotify</a>
                             <br/>
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
+                </div>
                 <h2>Albums</h2>
+                <div class="iDiv">
                 {% for album in value2 %}
                     {% for key, value in album.items() %}
                         {% if key == "name" %}
-                            <span>{{value}}</span>
+                            <span class="mSpan">{{value}}</span>
+                        {% endif %}
+                        {% if key == "shareUrl" %}
+                            <a class='sml-button' href="{{ value }}">Spotify</a>
                             <br/>
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
+                </div>
                 <h2>Songs</h2>
+                <div class="iDiv">
                 {% for song in value3 %}
                     {% for key, value in song.items() %}
                         {% if key == "name" %}
-                            <span>{{value}}</span>
+                            <span class="mSpan">{{value}}</span>
+                        {% endif %}
+                        {% if key == "shareUrl" %}
+                            <a class='sml-button' href="{{ value }}">Spotify</a>
                             <br/>
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
+                </div>
+                <br/>
             </div>
+            <br/>
         </div>
     </body>
 </html>

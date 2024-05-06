@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>The Tempo Trove</title>
+        <title>The Tempo Trove- {{user}}'s Profile</title>
+        <link rel="icon" href="/static/TheTempoTrove.png">
+        <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     </head>
     <body>
         <div class="header">
@@ -14,8 +15,8 @@
             <a class='button' href="{{ url_for('logout') }}">Logout</a>
         </div>
         <div class="main">
-            <h1>Welcome to The Tempo Trove!</h1>
-            <p class='username'>{{user}}</p>
+            <h1>{{user}}'s Profile</h1>
+            <p>{{user}}'s info</p>
             <div class="items">
                 <h2>Bands</h2>
                 {% for band in items %}
@@ -47,10 +48,11 @@
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
-            </div>            
-            <a class='button' href="{{ url_for('concerts') }}">Concerts</a>
-            <a class='button' href="{{ url_for('logout') }}">Related</a>
-            <a class='button' href="{{ url_for('logout') }}">Visual</a>
+                <br/>
+                <a class='sml-button' href="{{ url_for('concerts') }}">Concerts</a>
+                <a class='sml-button' href="{{ url_for('related') }}">Related</a>
+                <a class='sml-button' href="{{ url_for('visual') }}">Visual</a>
+            </div>
         </div>
     </body>
 </html>
