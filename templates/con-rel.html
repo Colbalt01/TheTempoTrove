@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>The Tempo Trove- Extra</title>
+        <link rel="icon" href="/static/TheTempoTrove.png">
+        <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    </head>
+    <body>
+        <div class="header">
+            <img src="/static/TheTempoTrove.png" style="float:left;" class="logo" alt="logo"></img>
+            <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('index') }}">Home</a>
+            <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('insertItem') }}">Insert</a>
+            <a class='button' style="float:left"  href="{{ url_for('logout') }}">Logout</a>
+            <a class='right' style="float:right;" href="{{ url_for('userPage') }}">
+                <img src="/static/{{username}}.jpg" class="logo" alt="logo"></img>
+            </a>
+            <div class="title">
+                <h1>Welcome to The Tempo Trove!</h1>
+                <p>This page is for looking up concerts that are in your area and for finding bands that are related to your favorites</p>
+            </div>
+        </div>
+        <div class="main">
+            <br/>
+            <div class="e-items">
+                {% from "_formhelpers.html" import render_field %}
+                <form method=post>
+                    <dl>
+                        {{ render_field(formC.band) }}
+                        {{ render_field(formC.location) }}
+                        {{ render_field(formC.submitC) }}
+                    </dl>
+                </form>
+                <div>
+                    {% if status == 2 %}
+                        <span>Band Not Found</span>
+                    {% elif status == 3 %}
+                        <span>Band Not On Tour</span>
+                    {% elif status == 4 %}
+                        <span></span>
+                    {% elif status == 5 %}
+                        <span>On Tour But not in this location</span>
+                    {% else %}
+                        <span>Please input a band and a concert</span>
+                    {% endif %}
+                </div>
+                {% if concert != {} %}
+                    <h3 class="cTitle">{{concert.title}}</h3>
+                    <span>City: {{concert.location}}</span>
+                    <br/>
+                    <span>Venue: {{concert.venue}}</span>
+                    <br/>
+                    {% set list1 = concert.get('date').split('T') %}
+                    {% set list2 = list1[1].split('-') %}
+                    {% set t = list2[0].split(':') %}
+                    {% if t[0]|int > 12 %}
+                        {% set time = t[0]|int-12 %}
+                        <span>Date: {{list1[0]}} {{time}}:{{t[1]}}:{{t[2]}} PM</span>
+                    {% else %}
+                        <span>Date: {{list1[0]}} {{list2[0]}} AM</span>
+                    {% endif %}
+                    <br/>
+                    {% for ticketer in value %}
+                        {% for key, value in ticketer.items() %}
+                            {% if key == "url" %}
+                                <span class="cSpan"><a href="{{ value }}">Ticketer</a></span>
+                            {% elif key == "imageUrl" %}
+                                <img class="cImg" src="{{ value }}">
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            <br/>
+            <a class='button backButton' href="{{ url_for('userPage') }}">Back</a>
+            </div>
+            <div class="e-items">
+                {% set bands = [] %}
+                {% for fav in favs %}
+                    {% if fav.get('type') == "artist" %}
+                        {{ bands.append(fav.get('name'))|default("", True) }}
+                    {% endif %}
+                {% endfor %}
+                <span>Bands:</span>
+                <br/>
+                {% from "_formhelpers.html" import render_field %}
+                <form method=post>
+                    <dl class="iDl">
+                        {{ render_field(formR.bands) }}
+                        {{ render_field(formR.submitR) }}
+                    </dl>
+                </form>
+                {% if rBands != [] %}
+                    <span class="rRelBand">Related bands:</span>
+                    <br/>
+                    {% for rBand in rBands %}
+                        <span class="rBandName">{{rBand.name}}:</span>
+                        <br/>
+                        {% for r in rBand.bands %}
+                            <span>{{r}}</span>
+                            <br/>
+                        {% endfor %}
+                        <br/>
+                    {% endfor %}
+                {% endif %}
+                <a class='button' href="{{ url_for('userPage') }}">Back</a>
+            </div>
+        </div>
+        </div>
+    </body>
+</html>

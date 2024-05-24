@@ -8,66 +8,67 @@
     </head>
     <body>
         <div class="header">
-            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>
-            <a class='button' href="{{ url_for('index') }}">Home</a>
-            <a class='button' href="{{ url_for('insertItem') }}">Insert</a>
-            {% if not value4 %}
-                <a class='button' href="{{ url_for('register') }}">Register</a>
-                <a class='button' href="{{ url_for('login') }}">Login</a>            
+            <img src="/static/TheTempoTrove.png" style="float:left;" class="logo" alt="logo"></img>
+            <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('index') }}">Home</a>
+            <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('insertItem') }}">Insert</a>
+            {% if not loggedIn %}
+                <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('register') }}">Register</a>
+                <a class='button' style="float:left" href="{{ url_for('login') }}">Login</a>
             {% else %}
-            <a class='button' href="{{ url_for('userPage') }}">Profile</a>
-            <a class='button' href="{{ url_for('logout') }}">Logout</a>
+                <a class='button' style="float:left"  href="{{ url_for('logout') }}">Logout</a>
+                <a class='right' style="float:right;" href="{{ url_for('userPage') }}">
+                    <img src="/static/{{username}}.jpg" class="logo" alt="logo"></img>
+                </a>
+                <div class="title">
+                    <h1>Welcome to The Tempo Trove!</h1>
+                    <span>This is my website where for music lovers to favorite!</span>
+                </div>
             {% endif %}
         </div>
         <div class="main">
-            <h1>Welcome to The Tempo Trove!</h1>
-            <p>This is my website where for music lovers to favorite!</p>
-            <div class="items">
-                <h2>Bands</h2>
+            <div class="new-items">
+                <h2>Recent Bands</h2>
                 <div class="iDiv">
                 {% for band in value1 %}
-                    {% for key, value in band.items() %}
-                        {% if key == "name" %}
-                            <span class="mSpan">{{value}}</span>
-                        {% endif %}
-                        {% if key == "shareUrl" %}
-                            <a class='sml-button' href="{{ value }}">Spotify</a>
+                    <div class="vItem">
+                        <div class="vItem2">
+                            <img class="coverImg" src="{{band.visuals.avatar[0].url}}">
                             <br/>
-                        {% endif %}
-                    {% endfor %}
+                            <p class="mSpan">{{band.name}}</p>
+                            <a class='sml-button' href="{{ band.shareUrl }}">Spotify</a>
+                            <br/>
+                        </div>
+                    </div>
                 {% endfor %}
                 </div>
-                <h2>Albums</h2>
+                <h2>Recent Albums</h2>
                 <div class="iDiv">
                 {% for album in value2 %}
-                    {% for key, value in album.items() %}
-                        {% if key == "name" %}
-                            <span class="mSpan">{{value}}</span>
-                        {% endif %}
-                        {% if key == "shareUrl" %}
-                            <a class='sml-button' href="{{ value }}">Spotify</a>
+                    <div class="vItem">
+                        <div class="vItem2">
+                            <img class="coverImg" src="{{album.cover[0].url}}">
                             <br/>
-                        {% endif %}
-                    {% endfor %}
+                            <p class="mSpan">{{album.name}}</p>
+                            <a class='sml-button' href="{{ album.shareUrl }}">Spotify</a>
+                        </div>
+                    </div>
                 {% endfor %}
                 </div>
-                <h2>Songs</h2>
+                <h2>Recent Songs</h2>
                 <div class="iDiv">
                 {% for song in value3 %}
-                    {% for key, value in song.items() %}
-                        {% if key == "name" %}
-                            <span class="mSpan">{{value}}</span>
-                        {% endif %}
-                        {% if key == "shareUrl" %}
-                            <a class='sml-button' href="{{ value }}">Spotify</a>
+                    <div class="vItem">
+                        <div class="vItem2">
+                            <img class="coverImg" src="{{song.album.cover[0].url}}">
                             <br/>
-                        {% endif %}
-                    {% endfor %}
+                            <p class="mSpan">{{song.name}}</p>
+                            <a class='sml-button' href="{{ song.shareUrl }}">Spotify</a>
+                        </div>
+                    </div>
                 {% endfor %}
                 </div>
                 <br/>
             </div>
-            <br/>
         </div>
     </body>
 </html>

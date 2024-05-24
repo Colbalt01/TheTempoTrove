@@ -1,4 +1,6 @@
 import DAL
+import json
+import sys
 
 class UserHandler:
     def register(username, email, password):

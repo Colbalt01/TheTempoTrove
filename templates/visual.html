@@ -8,84 +8,99 @@
     </head>
     <body>
         <div class="header">
-            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>            
-            <a class='button' href="{{ url_for('index') }}">Home</a>
-            <a class='button' href="{{ url_for('insertItem') }}">Insert</a>
-            <a class='button' href="{{ url_for('userPage') }}">Profile</a>
-            <a class='button' href="{{ url_for('logout') }}">Logout</a>
+            <img src="/static/TheTempoTrove.png" style="float:left;" class="logo" alt="logo"></img>
+            <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('index') }}">Home</a>
+            <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('insertItem') }}">Insert</a>
+            <a class='button' style="float:left"  href="{{ url_for('logout') }}">Logout</a>
+            <a class='right' style="float:right;" href="{{ url_for('userPage') }}">
+                <img src="/static/{{username}}.jpg" class="logo" alt="logo"></img>
+            </a>
+            <div class="title">
+                <h1>Welcome to The Tempo Trove!</h1>
+                <p>Visualize all your favorites here! You can even click to go to view more info!</p>
+            </div>
         </div>
         <div class="vMain">
-            <h1>Welcome to The Tempo Trove!</h1>
-            <p>Visualize all your favorites here!</p>
-            <div class="visual-items">
-                <h3 class="vHeader">Bands</h3>
-                <div class="vDiv">
+            <div class="new-items">
+                <h2>Bands</h2>
+                <div class="iDiv">
                 {% for fav in favs %}
                     {% if fav.get('type') == "artist" %}
                         {% for bH in bands %}
                             {% if bH.get('name') == fav.get('name') %}
-                                <div class="vItem">
-                                    <img src="{{bH.visuals.avatar[0].url}}">
-                                    <br/>
-                                    <span class="mSpan">{{fav.name}}</span>
-                                    <br/>
-                                    {% for g in genres %}
-                                        {% if g.get('name') == fav.get('name') %}
-                                        <span class="mSpan">Genres:</span>
-                                            {% for ge in g.get('genres') %}
-                                                {% if ge == g.get('genres')[g.get('genres')|length-1] %}
-                                                    <span class="mSpan">{{ge}}</span>
-                                                {% else %}
-                                                    <span class="mSpan">{{ge}},</span>
+                                <a style = "color: black;" href="{{ url_for('visualItem',name=fav.get('name'))}}">
+                                    <div class="vItem">
+                                        <div class="vItem2">
+                                            <img class="coverImg" src="{{bH.visuals.avatar[0].url}}">
+                                            <br/>
+                                            <span class="mSpan">{{fav.name}}</span>
+                                            <br/>
+                                            {% for g in genres %}
+                                                {% if g.get('name') == fav.get('name') %}
+                                                <span class="mSpan">Genres:</span>
+                                                    {% for ge in g.get('genres') %}
+                                                        {% if ge == g.get('genres')[g.get('genres')|length-1] %}
+                                                            <span class="mSpan">{{ge}}</span>
+                                                        {% else %}
+                                                            <span class="mSpan">{{ge}},</span>
+                                                        {% endif %}
+                                                    {% endfor %}
                                                 {% endif %}
                                             {% endfor %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
+                                        </div>
+                                    </div>
+                                </a>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
                 {% endfor %}
                 </div>
-                <h3 class="vHeader">Albums</h3>
-                <div class="vDiv">
+                <h2>Albums</h2>
+                <div class="iDiv">
                 {% for fav in favs %}
                     {% if fav.get('type') == "album" %}
                         {% for aH in albums %}
                             {% if aH.get('name') == fav.get('name') %}
-                            <div class="vItem">
-                                    <img src="{{aH.cover[2].url}}">
-                                    <br/>
-                                    <span class="mSpan">{{fav.name}}</span>
-                                    <br/>
-                                    <span class="mSpan">{{aH.artists[0].name}}</span>
-                                    <br/>
-                                </div>
+                                <a style = "color: black;" href="{{ url_for('visualItem',name=fav.get('name'))}}">
+                                    <div class="vItem">
+                                        <div class="vItem2">
+                                            <img class="coverImg" src="{{aH.cover[2].url}}">
+                                            <br/>
+                                            <span class="mSpan">{{fav.name}}</span>
+                                            <br/>
+                                            <span class="mSpan">{{aH.artists[0].name}}</span>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                </a>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
                 {% endfor %}
                 </div>
-                <h3 class="vHeader">Songs</h3>
-                <div class="vDiv">
+                <h2>Songs</h2>
+                <div class="iDiv">
                 {% for fav in favs %}
                     {% if fav.get('type') == "track" %}
                         {% for sH in songs %}
                             {% if sH.get('name') == fav.get('name') %}
-                            <div class="vItem">
-                                    <img src="{{sH.album.cover[2].url}}">
-                                    <br/>
-                                    <span class="mSpan">{{fav.name}} by {{sH.artists[0].name}}</span>
-                                    <!-- <span class="mSpan">{{sH.durationText}}</span> -->
-                                    <br/>
-                                </div>
+                                <a style = "color: black;" href="{{ url_for('visualItem',name=fav.get('name'))}}">
+                                    <div class="vItem">
+                                        <div class="vItem2">
+                                            <img class="coverImg" src="{{sH.album.cover[2].url}}">
+                                            <br/>
+                                            <span class="mSpan">{{fav.name}} by {{sH.artists[0].name}}</span>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                </a>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
                 {% endfor %}
                 </div>
+                <a class='button' href="{{ url_for('userPage') }}">Back</a>
             </div>
-            <br/>
         </div>
     </body>
 </html>

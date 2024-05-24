@@ -2,56 +2,75 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>The Tempo Trove- {{user}}'s Profile</title>
+        <title>The Tempo Trove- {{user.username}}'s Profile</title>
         <link rel="icon" href="/static/TheTempoTrove.png">
         <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     </head>
     <body>
         <div class="header">
-            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>            
-            <a class='button' href="{{ url_for('index') }}">Home</a>
-            <a class='button' href="{{ url_for('insertItem') }}">Insert</a>
-            <a class='button' href="{{ url_for('userPage') }}">Profile</a>
-            <a class='button' href="{{ url_for('logout') }}">Logout</a>
+            <img src="/static/TheTempoTrove.png" style="float:left;" class="logo" alt="logo"></img>
+            <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('index') }}">Home</a>
+            <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('insertItem') }}">Insert</a>
+            <a class='button' style="float:left"  href="{{ url_for('logout') }}">Logout</a>
+            <a class='right' style="float:right;" href="{{ url_for('userPage') }}">
+                <img src="/static/{{username}}.jpg" class="logo" alt="logo"></img>
+            </a>
+            <div class="title">
+                <h1>{{user.username}}'s Profile</h1>
+                <span>{{user.name}} {{user.email}} password: {{user.password}}</span>
+            </div>
         </div>
         <div class="main">
-            <h1>{{user}}'s Profile</h1>
-            <p>{{user}}'s info</p>
-            <div class="items">
-                <h2>Bands</h2>
-                {% for band in items %}
-                {% set typeF = band.get('type') %}
-                    {% for key, value in band.items() %}
-                        {% if key == "name" and typeF == "artist" %}
-                            <span>{{value}}</span>
-                            <br/>
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
-                <h2>Albums</h2>
-                {% for album in items %}
-                {% set typeF = album.get('type') %}
-                    {% for key, value in album.items() %}
-                        {% if key == "name" and typeF == "album" %}
-                            <span>{{value}}</span>
-                            <br/>
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
-                <h2>Songs</h2>
-                {% for song in items %}
-                {% set typeF = song.get('type') %}
-                    {% for key, value in song.items() %}
-                        {% if key == "name" and typeF == "track" %}
-                            <span>{{value}}</span>
-                            <br/>
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
-                <br/>
-                <a class='sml-button' href="{{ url_for('concerts') }}">Concerts</a>
-                <a class='sml-button' href="{{ url_for('related') }}">Related</a>
+            <br/>
+            <div class="new-items">
+                <a class='sml-button' href="{{ url_for('extra') }}">Extra</a>
                 <a class='sml-button' href="{{ url_for('visual') }}">Visual</a>
+                <h2>Your Favorite Bands</h2>
+                <div class="iDiv">
+                    {% for band in items %}
+                        {% set typeF = band.get('type') %}
+                        {% if typeF == "artist" %}
+                            <div class="vItem">
+                                <div class="vItem2">
+                                    <img class="userImg" src="{{band.visuals.avatar[0].url}}">
+                                    <br/>
+                                    <span>{{band.name}}</span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <h2>Your Favorite Albums</h2>
+                <div class="iDiv">
+                    {% for album in items %}
+                        {% set typeF = album.get('type') %}
+                        {% if typeF == "album" %}
+                            <div class="vItem">
+                                <div class="vItem2">
+                                    <img class="userImg" src="{{album.cover[0].url}}">
+                                    <br/>
+                                    <span>{{album.name}}</span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <h2>Your Favorite Songs</h2>
+                <div class="iDiv">
+                    {% for song in items %}
+                        {% set typeF = song.get('type') %}
+                        {% if typeF == "track" %}
+                            <div class="vItem">
+                                <div class="vItem2">
+                                    <img class="userImg" src="{{song.album.cover[0].url}}">
+                                    <br/>
+                                    <span>{{song.name}}</span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <br/>
             </div>
         </div>
     </body>

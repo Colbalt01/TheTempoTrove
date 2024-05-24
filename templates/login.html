@@ -5,22 +5,54 @@
         <title>The Tempo Trove-Login</title>
         <link rel="icon" href="/static/TheTempoTrove.png">
         <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+        <script>
+            function hide(){
+                div = document.querySelector('.forgotDiv');
+                if(div.style.visibility == 'hidden'){
+                    div.style.visibility = 'visible'
+                    div.style.display = 'block'
+                }else{
+                    div.style.visibility = 'hidden'
+                    div.style.display = 'none'
+                }
+            }
+            function forgot() {
+                div = document.querySelector('.forgotInput')
+                console.log(div.value)
+            }
+        </script>
     </head>
     <body>
         <div class="header">
-            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>            
+            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>
             <a class='button' href="{{ url_for('index') }}">Home</a>
             <a class='button' href="{{ url_for('insertItem') }}">Insert</a>
             <a class='button' href="{{ url_for('register') }}">Register</a>
             <a class='button' href="{{ url_for('login') }}">Login</a> 
         </div>
-            {% from "_formhelpers.html" import render_field %}
-            <form method=post>
-                <dl>
-                    {{ render_field(form.input) }}
-                    {{ render_field(form.password) }}
-                </dl>
-                <input type=submit value=Submit>
-            </form>
+        <div class="main logIn">
+            <h1>Login</h1>
+            <h3>Please login here</h3>
+            <div class="items">
+                {% from "_formhelpers.html" import render_field %}
+                <form method=post>
+                    <dl>
+                        {{ render_field(form.input) }}
+                        {{ render_field(form.password) }}
+                    </dl>
+                    <input type=submit value=Submit>
+                </form>
+                <br/>
+                <br/>
+                <button onclick = "hide()">Forgot Password?</button>
+                <br/>
+                <br/>
+                <div class="forgotDiv" style="visibility: hidden; display: none;" >
+                    <input class="forgotInput" placeholder="Email">
+                    <br/>
+                    <a onclick = "forgot()">Reset Password</a>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

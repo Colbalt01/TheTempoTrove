@@ -8,17 +8,19 @@
     </head>
     <body>
         <div class="header">
-            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>            
+            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>
             <a class='button' href="{{ url_for('index') }}">Home</a>
             <a class='button' href="{{ url_for('insertItem') }}">Insert</a>
             <a class='button' href="{{ url_for('register') }}">Register</a>
             <a class='button' href="{{ url_for('login') }}">Login</a>
         </div>
-        <div class="main">
-            <h1>You Are Logged Out</h1>
-            <p>This page needs you to be logged in</p>
-            <a class='button' href="{{ url_for('register') }}">Register</a>
-            <a class='button' href="{{ url_for('login') }}">Login</a>
+        <div class="main loggedOut">
+            <div class="items">
+                <h1>You Are Logged Out</h1>
+                <p>This page needs you to be logged in</p>
+                <a class='button' href="{{ url_for('register') }}">Register</a>
+                <a class='button' href="{{ url_for('login') }}">Login</a>
+            </div>
         </div>
     </body>
 </html>

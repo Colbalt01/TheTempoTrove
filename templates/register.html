@@ -8,22 +8,31 @@
     </head>
     <body>
         <div class="header">
-            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>            
+            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>
             <a class='button' href="{{ url_for('index') }}">Home</a>
             <a class='button' href="{{ url_for('insertItem') }}">Insert</a>
             <a class='button' href="{{ url_for('register') }}">Register</a>
             <a class='button' href="{{ url_for('login') }}">Login</a>
         </div>
-        {% from "_formhelpers.html" import render_field %}
-        <form method=post>
-            <dl>
-                {{ render_field(form.username) }}
-                {{ render_field(form.email) }}
-                {{ render_field(form.password) }}
-                {{ render_field(form.confirm) }}
-                {{ render_field(form.accept_tos) }}
-            </dl>
-            <input type=submit value=Submit>
-        </form>
+        <div class="main">
+            <h1>Account Creation</h1>
+            <h3>Here is the registration page!</h3>
+            <div class="items">
+                {% from "_formhelpers.html" import render_field %}
+                <form method=post enctype="multipart/form-data">
+                    <dl>
+                        {{ form.csrf_token }}
+                        {{ render_field(form.name) }}
+                        {{ render_field(form.username) }}
+                        {{ render_field(form.email) }}
+                        {{ render_field(form.password) }}
+                        {{ render_field(form.confirm) }}
+                        {{ render_field(form.picture) }}
+                        {{ render_field(form.accept_tos) }}
+                        {{ render_field(form.submit) }}
+                    </dl>
+                </form>
+            </div>
+        </div>
     </body>
 </html>

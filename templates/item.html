@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>The Tempo Trove- Visualizer</title>
+        <link rel="icon" href="/static/TheTempoTrove.png">
+        <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    </head>
+    <body>
+        <div class="header">
+            <img src="/static/TheTempoTrove.png" style="float:left;" class="logo" alt="logo"></img>
+            <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('index') }}">Home</a>
+            <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('insertItem') }}">Insert</a>
+            <a class='button' style="float:left"  href="{{ url_for('logout') }}">Logout</a>
+            <a class='right' style="float:right;" href="{{ url_for('userPage') }}">
+                <img src="/static/{{username}}.jpg" class="logo" alt="logo"></img>
+            </a>
+            <div class="title">
+                <h1>Welcome to The Tempo Trove!</h1>
+                <p>Visualize all your favorites here!</p>
+            </div>
+        </div>
+        <br/>
+        <div class="vMain">
+            {% if item != {} %}
+                {% if item.get("type") == "artist" %}
+                    <div class="new-items">
+                        <img class="itemImg" src="{{item.visuals.avatar[0].url}}">
+                        <h3>{{item.name}}</h3>
+                        <h4>Bio:</h4>
+                        <p>{{info.data.profile.biography.text}}</p>
+                        <br/>
+                        {% for g in genres %}
+                            {% if g.get('name') == item.get('name') %}
+                                <h4 class="mSpan">Genres:</h4>
+                                {% for ge in g.get('genres') %}
+                                    {% if ge == g.get('genres')[g.get('genres')|length-1] %}
+                                        <span class="mSpan">{{ge}}</span>
+                                    {% else %}
+                                        <span class="mSpan">{{ge}},</span>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                        <br/>
+                        <br/>
+                        <p><h4>Followers:</h4> {{info.data.stats.followers}}</p>
+                        <br/>
+                        <p><h4>Monthly Listeners:</h4> {{info.data.stats.monthlyListeners}}</p>
+                        <br/>
+                        <h4>Gallery:</h4>
+                        {% for gal in info.data.visuals.gallery["items"]%}
+                            <img class="itemImg" src="{{gal.sources[0].url}}">
+                        {% endfor %}
+                        <br/>
+                        <br/>
+                        <a class='sml-button' href="{{ item.shareUrl }}">Spotify</a>
+                    </div>
+                {% elif item.get("type") == "album" %}
+                    <div class="new-items">
+                        <img class="itemImg" src="{{info.data.coverArt.sources[2].url}}">
+                        <h3>{{info.data.name}}</h3>
+                        <h4>Artist:</h4>
+                        <p>{{info.data.artists["items"][0].profile.name}}</p>
+                        <br/>
+                        <h4>Year Released:</h4>
+                        <p>{{item.date}}</p>
+                        <br/>
+                        <h4>Tracks:</h4>
+                        <div style="width:1000px">
+                            {% for track in tracks.tracks["items"]%}
+                                {% if track == tracks.get('tracks')["items"][tracks.tracks["items"]|length-1] %}
+                                    <span>{{track.track.name}}</span>
+                                {% else %}
+                                    <span>{{track.track.name}}, </span>
+                                {% endif %}
+                            {% endfor %}
+                            <p>Amount: {{tracks.tracks.totalCount}}</p>
+                        </div>
+                        <br/>
+                        <a class='sml-button' href="{{ info.shareUrl }}">Spotify</a>
+                    </div>
+                {% elif item.get("type") == "track" %}
+                    <div class="new-items">
+                        <img class="itemImg" src="{{item.album.cover[2].url}}">
+                        <h3>{{item.name}}</h3>
+                        <div class="iItem">
+                            <h4>Artist:</h4>
+                            <p>{{item.artists[0].name}}</p>
+                        </div>
+                        <div class="iItem">
+                            <h4>Album:</h4>
+                            <p>{{item.album.name}}</p>
+                        </div>
+                        <div class="iItem">
+                            <h4>Duration:</h4>
+                            <p>{{item.durationText}}</p>
+                        </div>
+                        <br/>
+                        <br/>
+                        <h4>Lyrics:</h4>
+                        {% for lyric in info.lyrics %}
+                            <p>{{lyric.words}}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% else %}
+                <p>No item</p>
+            {% endif %}
+        </div>
+    </body>
+</html>

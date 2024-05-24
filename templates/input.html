@@ -9,20 +9,25 @@
     </head>
     <body>
         <div class="header">
-            <img src="/static/TheTempoTrove.png" class="logo" alt="logo"></img>            
-            <a class='button' href="{{ url_for('index') }}">Home</a>
-            <a class='button' href="{{ url_for('insertItem') }}">Insert</a>
+            <img src="/static/TheTempoTrove.png" style="float:left;" class="logo" alt="logo"></img>
+            <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('index') }}">Home</a>
+            <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('insertItem') }}">Insert</a>
             {% if not loggedIn %}
-                <a class='button' href="{{ url_for('register') }}">Register</a>
-                <a class='button' href="{{ url_for('login') }}">Login</a>            
+                <a class='button' style="float:left; padding-right: 5px;" href="{{ url_for('register') }}">Register</a>
+                <a class='button' style="float:left" href="{{ url_for('login') }}">Login</a>
             {% else %}
-            <a class='button' href="{{ url_for('userPage') }}">Profile</a>
-            <a class='button' href="{{ url_for('logout') }}">Logout</a>
+                <a class='button' style="float:left"  href="{{ url_for('logout') }}">Logout</a>
+                <a class='right' style="float:right;" href="{{ url_for('userPage') }}">
+                    <img src="/static/{{username}}.jpg" class="logo" alt="logo"></img>
+                </a>
+                <div class="title">
+                    <h1>Welcome to The Tempo Trove!</h1>
+                    <p>This is my website</p>
+                </div>
             {% endif %}
         </div>
+        <br/>
         <div class="main">
-            <h1>Welcome to The Tempo Trove!</h1>
-            <p>This is my website</p>
             <div class="items">
                 {% from "_formhelpers.html" import render_field %}
                 <form method=post>
@@ -33,9 +38,10 @@
                     </dl>
                     <input type=submit value=Submit>
                 </form>
+                <br/>
             </div>
             <br/>
-            <img src="/static/notes.png" class="img-i" alt="https://www.vecteezy.com/free-png/music-notes"></img> 
+            <img src="/static/notes.png" class="iImg" alt="https://www.vecteezy.com/free-png/music-notes"></img> 
         </div>
     </body>
 </html>
